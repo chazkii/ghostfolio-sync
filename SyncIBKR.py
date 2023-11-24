@@ -55,7 +55,7 @@ def get_diff(old_acts, new_acts):
 
 
 class SyncIBKR:
-    IBKRCATEGORY = "9da3a8a7-4795-43e3-a6db-ccb914189737"
+    IBKRCATEGORY = "337d7499-cc37-4fd5-abb5-44d909ee9545"
 
     def __init__(self, ghost_host, ibkrtoken, ibkrquery, ghost_token, ghost_currency):
         self.ghost_token = ghost_token
@@ -119,7 +119,6 @@ class SyncIBKR:
             print("No cash set, no cash retrieved")
             return False
         account = {
-            "accountType": "SECURITIES",
             "balance": float(cash),
             "id": account_id,
             "currency": self.ghost_currency,
@@ -207,12 +206,11 @@ class SyncIBKR:
 
     def create_ibkr_account(self):
         account = {
-            "accountType": "SECURITIES",
             "balance": 0,
             "currency": self.ghost_currency,
             "isExcluded": False,
             "name": "IBKR",
-            "platformId": "9da3a8a7-4795-43e3-a6db-ccb914189737"
+            "platformId": self.IBKRCATEGORY
         }
 
         url = f"{self.ghost_host}/api/v1/account"
@@ -229,7 +227,7 @@ class SyncIBKR:
             return ""
         if response.status_code == 201:
             return response.json()["id"]
-        print("Failed creating ")
+        print(f"Failed creating {response.json()}")
         return ""
 
     def get_account(self):
